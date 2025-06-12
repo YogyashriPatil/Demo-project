@@ -1,0 +1,29 @@
+{
+  "name": "demo_project",
+  "version": "1.0.0",
+  "description": "This is only for the practice the MERN stack project",
+  "homepage": "https://github.com/YogyashriPatil/Demo-project#readme",
+  "bugs": {
+    "url": "https://github.com/YogyashriPatil/Demo-project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YogyashriPatil/Demo-project.git"
+  },
+  "license": "ISC",
+  "author": "Yogyashri patil",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
