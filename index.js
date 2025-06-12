@@ -3,8 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import db from "./util/db.js"
  
-// import all router 
-import userRoutes from "./route/user.route.js"
+import userRoutes from "./routes/user.routes.js"
 dotenv.config()
 
 const app = express()
