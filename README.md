@@ -5,11 +5,6 @@
 
 ---
 
-## 🗂️ Project Structure
-
-
----
-
 ## ⚙️ Features
 
 - ✅ Clean & Modular structure  
