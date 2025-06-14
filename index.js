@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import db from "./util/db.js"
  
+//default route a raha tha esaliye khucch bhi name dale so userRoutes
 import userRoutes from "./routes/user.routes.js"
 dotenv.config()
 
@@ -16,21 +17,23 @@ app.use(cors(
         allowedHeaders:['Content-Type','Authorization'],
         credentials:true
     }
-))
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+));
+
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
-})
+});
 
 app.get('/yogyashri',(req,res)=>{
     res.send("Yogyashri is here")
-})
+});
 //connect to db
-db()
+//database is always in another continent 
+db();
 
-app.use("/api/v1/user/",userRoutes)
+app.use("/api/v1/users",userRoutes)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
