@@ -1,6 +1,8 @@
 import User from "../model/User.model.js"
 import crypto from "crypto"
 import nodemailer from "nodemailer"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 const registeredUser= async(req,res) => { 
     //get data
     // validate
@@ -86,4 +88,108 @@ const registeredUser= async(req,res) => {
     // console.log(email);
     
 };
-export {registeredUser};
+
+const verifyUser=async(req,res) => {
+    //get token from url
+    //validate token
+
+    //find user based on the token
+    //if not
+    //set iserfied token true
+    //remove verification token
+    //save 
+    // return response
+
+    const {token}=req.params;
+    console.log(token);
+    if(!token){
+        return res.status(400).json({
+            message:"Invallid token"
+        })
+    }
+    const user=await User.findOne({verificationToken:token})
+    if(!user){
+        return res.status(400).json({
+            message:"Invallid token"
+        })
+    }   
+    user.isVerified=true
+    user.verificationToken=undefined
+    await user.save()
+    return res.status(200).json({
+        message:""
+    })
+};
+
+const login =async(req,res) => {
+    const {email,password}=req.body
+
+    if(!email || !password){
+        return res.status(400).json({
+            message:"All fields are required"
+        })
+    }
+
+    try {
+        const user = await User.findOne({email})
+        if(!user)
+        {
+            return res.status(400).json({
+                message:"Invalid email or password",
+            })
+        }
+
+        const isMatch=await bcrypt.compare(password, user.password)
+        console.log(isMatch);
+
+        if(!isMatch){
+            return res.status(400).json({
+                message:"Invalid email or password",
+            });
+        }
+
+        if(!user.isVerified)
+        {
+            return res.status(400).json({
+                message:"user not verified please verified it",
+            });
+        }
+
+
+        const token = jwt.sign({id:user._id,role:user.role},
+            "shhhhh",{
+                expiresIn:'2 days'
+            }
+        );
+        //also give start time, expire time
+
+        const cookieOption={
+            httpOnly:true,
+            secure:true,
+            maxAge:24*60*600*1000
+        }
+
+        res.cookie("token",token,cookieOption)
+        
+        res.status(200).json({
+            success:true,
+            message:"Login successful",
+            token,
+            user:{
+                is:user._id,
+                name:user.name,
+                role:user.role,
+            }
+        })
+
+    } catch(error) {
+        res.status(400).json({
+            message:"User not login",
+            error,
+            success:false,
+        })
+    }
+};
+
+
+export {registeredUser,verifyUser,login};

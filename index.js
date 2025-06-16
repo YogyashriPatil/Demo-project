@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import db from "./util/db.js"
- 
+import cookieParser from "cookie-parser"
 //default route a raha tha esaliye khucch bhi name dale so userRoutes
 import userRoutes from "./routes/user.routes.js"
 dotenv.config()
@@ -21,6 +21,8 @@ app.use(cors(
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+//access the cookies
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
