@@ -191,5 +191,4 @@ const login =async(req,res) => {
     }
 };
 
-
 export {registeredUser,verifyUser,login};
