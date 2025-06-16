@@ -28,14 +28,14 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
-app.get('/yogyashri',(req,res)=>{
+app.post('/yogyashri',(req,res)=>{
     res.send("Yogyashri is here")
 });
 //connect to db
 //database is always in another continent 
 db();
-
 app.use("/api/v1/users",userRoutes)
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

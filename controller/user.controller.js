@@ -65,7 +65,7 @@ const registeredUser= async(req,res) => {
             to: user.email,
             subject:"Verify your email", //subject line
             text:`please click on the following link : 
-            ${process.env.BASE_URL}/api/v1/users/verify/${token}`,
+            ${process.env.BASE_URL}api/v1/users/verify/${token}`,
         };
 
         const checkMail=await transporter.sendMail(mailOption)
@@ -86,18 +86,19 @@ const registeredUser= async(req,res) => {
         })
     }
     // console.log(email);
+    res.send("Register")
     
 };
 
-const verifyUser=async(req,res) => {
-    //get token from url
-    //validate token
+const verifyUser= async(req,res) => {
+    // get token from url
+    // validate token
 
-    //find user based on the token
-    //if not
-    //set iserfied token true
-    //remove verification token
-    //save 
+    // find user based on the token
+    // if not
+    // set iserfied token true
+    // remove verification token
+    // save 
     // return response
 
     const {token}=req.params;
@@ -117,8 +118,9 @@ const verifyUser=async(req,res) => {
     user.verificationToken=undefined
     await user.save()
     return res.status(200).json({
-        message:""
+        message:"Verify user"
     })
+    res.send("Succes")
 };
 
 const login =async(req,res) => {
