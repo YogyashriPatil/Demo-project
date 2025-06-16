@@ -159,7 +159,7 @@ const login =async(req,res) => {
 
 
         const token = jwt.sign({id:user._id,role:user.role},
-            "shhhhh",{
+            process.env.JWT_SCRETE,{
                 expiresIn:'2 days'
             }
         );
@@ -193,4 +193,36 @@ const login =async(req,res) => {
     }
 };
 
-export {registeredUser,verifyUser,login};
+const getMe= async(req,res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+const logoutUser= async(req,res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+const forgotPassword= async(req,res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+const resetPassword = async(req,res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+export {registeredUser,verifyUser,login, getMe, logoutUser, forgotPassword, resetPassword };
