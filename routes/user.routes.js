@@ -6,7 +6,7 @@ const router=express.Router()
 router.post("/register", registeredUser)
 router.get("/verify/:token",verifyUser)
 router.post("/login",login);
-router.get("/me", isLoggedIn, getMe);
+router.get("/profile", isLoggedIn, getMe);
 router.get("/logout", isLoggedIn, logoutUser);
 // router.post("/me", isLoggedIn, resetPassword);
 

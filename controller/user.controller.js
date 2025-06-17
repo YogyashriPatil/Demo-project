@@ -157,9 +157,8 @@ const login =async(req,res) => {
             });
         }
 
-
         const token = jwt.sign({id:user._id,role:user.role},
-            process.env.JWT_SCRETE,{
+            process.env.JWT_SECRETE,{
                 expiresIn:'2 days'
             }
         );
@@ -185,6 +184,7 @@ const login =async(req,res) => {
         })
 
     } catch(error) {
+        console.log(error);
         res.status(400).json({
             message:"User not login",
             error,
@@ -205,16 +205,15 @@ const getMe= async(req,res) => {
             });
         }
 
-        return res.status(200).json({
+        res.status(200).json({
             success:true,
-            message:"User found",
-            user
+            user,
         });
         // console.log("getme reqest reached");
         // const data=req.user
         // console.log(data);
     } catch (error) {
-        
+        console.log(error);
     }
 }
 
@@ -303,7 +302,7 @@ const resetPassword = async(req,res) => {
             //set password in user
             // resetToken, resetExpiry => reset
             //save
-            
+
         } catch (error) {
             
         }
