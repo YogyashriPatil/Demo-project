@@ -195,7 +195,24 @@ const login =async(req,res) => {
 
 const getMe= async(req,res) => {
     try {
-        
+
+        const user = await User.findById(req.user.id).select('-password')
+
+        if (!user){
+            return res.status(400).json({
+                success:false,
+                message:"User not found",
+            });
+        }
+
+        return res.status(200).json({
+            success:true,
+            message:"User found",
+            user
+        });
+        // console.log("getme reqest reached");
+        // const data=req.user
+        // console.log(data);
     } catch (error) {
         
     }
@@ -203,23 +220,94 @@ const getMe= async(req,res) => {
 
 const logoutUser= async(req,res) => {
     try {
-        
+        res.cookie('token','',{
+            // expires: new Date(0)
+        })
+        res.status(200).json({
+            success:true,
+            message:"logged out successfully"
+        });
     } catch (error) {
         
     }
 }
 
 const forgotPassword= async(req,res) => {
-    try {
+   
+        //get email =req.body
+        // find user based on email
+        // reset token + reset expiry => date.now()+10*60*1000 => user.save()
+        // send mail => design url
+
+        const {email}=req.body
         
-    } catch (error) {
-        
-    }
+        try {
+            const user= User.findOne({email})
+            if(!user){
+                return res.status(400).json({
+                    message:"User not found"
+                })
+            }
+
+            const token=crypto.randomBytes(32).toString("hex")
+            console.log(token);
+            
+            const resetPasswordExpire = Date.now()+ 10*60*1000
+
+            user.resetPasswordExpires = resetPasswordExpire
+
+            await user.save()
+            const transporter=nodemailer.createTransport({
+                host:process.env.MAILTRAP_HOST,
+                port: process.env.MAILTRAP_PORT,
+                secure:false, //trur for port 465, flase to other ports
+                auth:{
+                    user:process.env.MAILTRAP_USERNAME,
+                    pass:process.env.MAILTRAP_PASSWORD,
+                },
+            });
+
+            const mailOption={
+                from: process.env.MAILTRAP_SENDERMAIL,
+                to: user.email,
+                subject:"reset your password", //subject line
+                text:`please click on the following link to reset the password: 
+                ${process.env.BASE_URL}api/v1/users/resetpassword/${token}`,
+            };
+
+            const checkMail=await transporter.sendMail(mailOption)
+            if(!checkMail){
+                return res.status(400).json({
+                    message:"User already exist"
+                })
+            }
+        } catch (error) {
+            console.error("Error in forgotPassword:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+        }
 }
 
 const resetPassword = async(req,res) => {
     try {
-        
+        // collect token from params
+        // password from re.body
+        // findone
+        const {token} =req.params
+        const {password} =req.body
+
+        try {
+            User.findOne({
+                resetPasswordToken:token,
+                resetPasswordExpires: { $gt: Date.now() }
+            })
+            //set password in user
+            // resetToken, resetExpiry => reset
+            //save
+            
+        } catch (error) {
+            
+        }
+
     } catch (error) {
         
     }

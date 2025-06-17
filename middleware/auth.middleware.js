@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken"
 export const isLoggedIn =async (req,res , next ) => {
-    
     try {
         console.log(req.cookies);
-        let token = req.cookies?.token
+        const token = req.cookies?.token
         console.log("Token found ",token ? "Yes" : "NO ");
 
         if(!token) {
@@ -13,14 +12,14 @@ export const isLoggedIn =async (req,res , next ) => {
                 message:"Authentication failed",
             })
         }
-
-        const decodedToken = jwt.verify(token, process.env.JWT_SCRETE)
-        console.log("decoded data "+decodedToken);
+        const getToken = process.env.JWT_SECRETE
+        const decodedToken = jwt.verify(token, getToken)
+        console.log("decoded data ", decodedToken);
         req.user=decodedToken
 
         next()
     } catch (error) {
-        console.log("Auth middleware failure");
+        console.log("Auth middleware failure"+error);
         return res.status(500).json({
             success:false,
             message:"Internal server error",
